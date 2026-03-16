@@ -1,0 +1,53 @@
+# Store values
+0: LI R1, 1; # R1 holds the constant 1 for comparison
+1: LD R2, R0; # R2 holds the value at memory address 0 in the DataMemory
+2: LI R3, 10; # R3 holds the DataMemory Address for output storage
+3: LI R4, 28;  # R4 holds the PC for the return 0 sequence
+4: LI R5, 30; # R5 holds the PC for the return 1 sequence
+5: LI R6, 2; # R6 holds the constant 2
+6: LI R7, 3; # R7 holds the odd number (Starts at 3)
+7: LI R8, 17; # R8 holds the start of the divisible check
+8: LI R9, 22; # R9 holds the second part of the divisible check
+9: LI R10, 3; # R10 is a placeholder that is used to check divisibility
+10: LI R12, 25; # R12 holds the space in which the value currently being checked is stored
+
+
+# Check if target number is less than or equal to 1
+11: JLT R4, R2, R1;
+12: JEQ R4, R2, R1;
+
+# Check if target number is equal to two or even
+13: JEQ R5, R2, R6; # Checks if two
+14: AND R11, R2, R6; # Creates AND between 2 and number
+15: JEQ R4, R2, R11; # If result is two then number is even
+
+# Check if target number is equal to 3
+16: JEQ R5, R2, R7;
+
+# Check divisible
+17: JLT R9, R2, R10; # Check if the target number is less than the check number
+18: JEQ R4, R10, R2; # If the check and target numbers are equal, the target number is not a prime
+19: ADD R10, R10, R7; # R10 = R10 + R7 (increment the check number by the base number)
+20: JLT R9, R10, R7; # Checks if R10 (check number) wrapped around the maximum value
+21: JR R8; # Move to 17
+
+# Check and update new (base) number to check if divisible
+22: ADD R7, R6, R7; # Update the base number
+23: JEQ R5, R2, R7; # Check if the base number is equal to the number, in that case it is a prime
+24: JLT R5, R2, R7; # Checks if the base number is greater than the target number, in that case it is a prime
+25: SD R7, R12; # Stores the new base number in DataMemory
+26: LD R10, R12; # Loads the base number into R10 (Update check number to base number)
+27: JR R8; # Goes to 17
+
+# Return 0
+28: SD R0, R3;
+29: END;
+
+# Return 1
+30: SD R1, R3;
+31: END;
+
+
+
+
+
